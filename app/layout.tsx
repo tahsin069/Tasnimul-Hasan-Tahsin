@@ -34,13 +34,13 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
       <body
         suppressHydrationWarning
-        className="bg-[#FAF9F5] text-[#111318] antialiased selection:bg-[#1D4ED8] selection:text-white"
+        className="bg-[#EEF2FF] text-[#0F172A] antialiased selection:bg-[#2563EB] selection:text-white overflow-x-hidden desktop-cursor-root"
       >
         {children}
       </body>
