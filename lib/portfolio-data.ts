@@ -17,6 +17,8 @@ export interface PortfolioProject {
   period: string;
   featuredSpan: 'wide' | 'standard';
   accentColor: string;
+  liveUrl?: string;
+  liveDomainLabel?: string;
   summary: string;
   recruiterTakeaway: string;
   technologies: string[];
@@ -130,6 +132,8 @@ export const PROJECTS_DATA: PortfolioProject[] = [
     period: 'Recent Project · 2026',
     featuredSpan: 'wide',
     accentColor: '#1D4ED8',
+    liveUrl: 'https://bangla-path.vercel.app/?book=apadartho-satyajit-ray&chapter=1&lang=bn',
+    liveDomainLabel: 'bangla-path.vercel.app',
     summary:
       'A curated digital library and literary discovery platform engineered to preserve, index, and make classic and contemporary Bengali literature (Bangla Grantha) effortlessly searchable across desktop and mobile devices.',
     recruiterTakeaway:
@@ -212,6 +216,8 @@ export function queryGranthaCatalog(
     period: 'Recent Project · 2026',
     featuredSpan: 'wide',
     accentColor: '#047857',
+    liveUrl: 'https://turf-dhaka.vercel.app/',
+    liveDomainLabel: 'turf-dhaka.vercel.app',
     summary:
       'A dedicated sports venue discovery and automated slot-booking platform built for Dhaka football and cricket players, replacing fragmented phone/message reservations with live availability matrices, zone filtering, and per-player split cost calculation.',
     recruiterTakeaway:

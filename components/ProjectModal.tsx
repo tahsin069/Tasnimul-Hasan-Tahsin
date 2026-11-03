@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { X, Layers, Terminal, CheckCircle2, Sparkles } from 'lucide-react';
+import { X, Layers, Terminal, CheckCircle2, ArrowUpRight, Globe } from 'lucide-react';
 import { PortfolioProject } from '@/lib/portfolio-data';
 
 interface ProjectModalProps {
@@ -48,23 +48,63 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             <p className="mt-1 text-sm sm:text-base text-[#525866]">{project.subtitle}</p>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close case study modal"
-            className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#111318] text-white hover:bg-[#1D4ED8] transition-colors shrink-0 cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2.5 shrink-0">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-semibold bg-[#1D4ED8] text-white hover:bg-[#1E40AF] transition-colors whitespace-nowrap"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>Visit Live Site</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            )}
+
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close case study modal"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#111318] text-white hover:bg-[#1D4ED8] transition-colors shrink-0 cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Body Content */}
         <div className="mt-6 space-y-8">
+          {/* Live Interactive Embed inside Modal if liveUrl is present */}
+          {project.liveUrl && (
+            <div className="rounded-xl overflow-hidden border border-[#E4E4E0] bg-[#FAF9F5]">
+              <div className="px-4 py-2.5 bg-[#111318] text-white flex items-center justify-between gap-3 text-xs">
+                <span className="font-mono truncate">{project.liveUrl}</span>
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold text-[#60A5FA] hover:underline whitespace-nowrap shrink-0"
+                >
+                  <span>Open in New Tab</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+              <div className="w-full h-[380px] sm:h-[440px] bg-white">
+                <iframe
+                  src={project.liveUrl}
+                  title={`${project.title} Live Application`}
+                  className="w-full h-full border-0"
+                />
+              </div>
+            </div>
+          )}
+
           {/* Executive Summary & Recruiter Takeaway */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div className="md:col-span-7 space-y-2">
               <h3 className="text-xs font-semibold text-[#525866]">
-                System Overview & Problem Statement
+                System Overview &amp; Problem Statement
               </h3>
               <p className="text-sm sm:text-base text-[#111318] leading-relaxed">
                 {project.summary}
@@ -98,7 +138,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Engineering Implementation Highlights */}
           <div className="space-y-3">
             <h3 className="text-sm font-bold text-[#111318]">
-              Core Engineering & Implementation Highlights
+              Core Engineering &amp; Implementation Highlights
             </h3>
             <ul className="space-y-2.5">
               {project.engineeringHighlights.map((bullet, i) => (
@@ -167,13 +207,25 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <span className="font-semibold text-[#111318]">Technologies Applied: </span>
               {project.technologies.join(' · ')}
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#111318] rounded-lg hover:bg-[#1D4ED8] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              Close Case Study
-            </button>
+            <div className="flex items-center gap-3 shrink-0">
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2.5 text-xs font-semibold text-white bg-[#1D4ED8] rounded-lg hover:bg-[#1E40AF] transition-colors whitespace-nowrap"
+                >
+                  Open Live Website ↗
+                </a>
+              )}
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-5 py-2.5 text-xs font-semibold text-white bg-[#111318] rounded-lg hover:bg-[#374151] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                Close Case Study
+              </button>
+            </div>
           </div>
         </div>
       </div>

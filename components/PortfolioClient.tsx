@@ -41,6 +41,11 @@ export default function PortfolioClient() {
   const [copiedBrief, setCopiedBrief] = useState<boolean>(false);
   const [portraitError, setPortraitError] = useState<boolean>(false);
   const [isPortraitLightboxOpen, setIsPortraitLightboxOpen] = useState<boolean>(false);
+  const [interactiveEmbedIds, setInteractiveEmbedIds] = useState<Record<string, boolean>>({});
+
+  const toggleEmbedInteraction = (id: string) => {
+    setInteractiveEmbedIds((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   // Recruiter Quick-Contact Form State
   const [recruiterName, setRecruiterName] = useState<string>('');
@@ -191,11 +196,28 @@ export default function PortfolioClient() {
                     {PROFILE_DATA.professionalSummary}
                   </p>
 
-                  {/* Unboxed Recruiter Quick-Facts */}
+                  {/* Unboxed Recruiter Quick-Facts with Direct Clickable Project Links */}
                   <div className="pt-1 text-xs sm:text-sm text-[#525866] space-y-1">
                     <div>
-                      <strong className="text-[#111318]">Recent Platforms:</strong> BanglaGrantha
-                      (Bengali Literary Archive) · TurfDhaka (Dhaka Sports Slot Booking Engine)
+                      <strong className="text-[#111318]">Recent Live Platforms:</strong>{' '}
+                      <a
+                        href="https://bangla-path.vercel.app/?book=apadartho-satyajit-ray&chapter=1&lang=bn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[#1D4ED8] hover:underline"
+                      >
+                        BanglaGrantha ↗
+                      </a>{' '}
+                      (Bengali Literary Archive) ·{' '}
+                      <a
+                        href="https://turf-dhaka.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[#1D4ED8] hover:underline"
+                      >
+                        TurfDhaka ↗
+                      </a>{' '}
+                      (Dhaka Sports Slot Booking Engine)
                     </div>
                     <div>
                       <strong className="text-[#111318]">Academic &amp; Lab Systems:</strong> Java
@@ -424,98 +446,227 @@ export default function PortfolioClient() {
 
             {/* Bento Grid of Projects */}
             <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {filteredProjects.map((project) => (
-                <article
-                  key={project.id}
-                  onClick={() => setSelectedProject(project)}
-                  className="group bg-white rounded-2xl border border-[#E4E4E0] hover:border-[#111318] transition-colors p-6 sm:p-8 flex flex-col justify-between cursor-pointer"
-                >
-                  <div>
-                    {/* Top Unboxed Kicker (Zero-Pill Discipline) */}
-                    <div className="flex items-center justify-between gap-4 text-xs text-[#525866] font-mono">
-                      <span>
-                        {project.index} · {project.categoryLabel}
-                      </span>
-                      <span className="tabular-nums">{project.period}</span>
-                    </div>
+              {filteredProjects.map((project) => {
+                const isInteractiveEmbed = !!interactiveEmbedIds[project.id];
 
-                    {/* Project Title & Subtitle */}
-                    <div className="mt-3 flex items-start justify-between gap-4">
-                      <div>
-                        <h3 className="text-xl sm:text-2xl font-bold text-[#111318] group-hover:text-[#1D4ED8] transition-colors">
-                          {project.title}
-                        </h3>
-                        <p className="mt-1 text-sm font-medium text-[#525866]">
-                          {project.subtitle}
-                        </p>
+                return (
+                  <article
+                    key={project.id}
+                    onClick={() => {
+                      if (!project.liveUrl) {
+                        setSelectedProject(project);
+                      }
+                    }}
+                    className={`group bg-white rounded-2xl border border-[#E4E4E0] hover:border-[#111318] transition-colors p-6 sm:p-8 flex flex-col justify-between ${
+                      project.liveUrl ? '' : 'cursor-pointer'
+                    }`}
+                  >
+                    <div>
+                      {/* Top Unboxed Kicker (Zero-Pill Discipline) */}
+                      <div className="flex items-center justify-between gap-4 text-xs text-[#525866] font-mono">
+                        <span>
+                          {project.index} · {project.categoryLabel}
+                        </span>
+                        <span className="tabular-nums">{project.period}</span>
                       </div>
-                      <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#FAF9F5] border border-[#E4E4E0] group-hover:bg-[#111318] group-hover:text-white transition-colors shrink-0">
-                        <ArrowUpRight className="w-4 h-4" />
-                      </span>
-                    </div>
 
-                    {/* Visual Architectural Blueprint Header */}
-                    <div className="mt-6 p-4 rounded-xl bg-[#FAF9F5] border border-[#E4E4E0]">
-                      <div className="text-[11px] font-mono text-[#525866] mb-3 flex items-center justify-between">
-                        <span>SYSTEM ARCHITECTURE PIPELINE</span>
-                        <span>{project.context}</span>
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                        {project.architectureNodes.map((node, i) => (
-                          <div
-                            key={node.layer}
-                            className="p-2.5 bg-white rounded-lg border border-[#E4E4E0]"
+                      {/* Project Title & Subtitle (Clickable to Live URL when available) */}
+                      <div className="mt-3 flex items-start justify-between gap-4">
+                        <div>
+                          {project.liveUrl ? (
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 text-xl sm:text-2xl font-bold text-[#111318] hover:text-[#1D4ED8] transition-colors"
+                            >
+                              <span>{project.title}</span>
+                              <ArrowUpRight className="w-5 h-5 text-[#1D4ED8] shrink-0" />
+                            </a>
+                          ) : (
+                            <h3 className="text-xl sm:text-2xl font-bold text-[#111318] group-hover:text-[#1D4ED8] transition-colors">
+                              {project.title}
+                            </h3>
+                          )}
+                          <p className="mt-1 text-sm font-medium text-[#525866]">
+                            {project.subtitle}
+                          </p>
+                        </div>
+
+                        {project.liveUrl ? (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Visit live ${project.title} website`}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold bg-[#1D4ED8] text-white hover:bg-[#1E40AF] transition-colors whitespace-nowrap shrink-0"
                           >
-                            <div className="text-[10px] font-mono text-[#525866]">
-                              0{i + 1} · {node.layer}
-                            </div>
-                            <div className="mt-0.5 text-xs font-bold text-[#111318] font-mono truncate">
-                              {node.component}
+                            <span>Visit Live Site</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </a>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedProject(project)}
+                            aria-label={`Inspect ${project.title} architecture`}
+                            className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#FAF9F5] border border-[#E4E4E0] group-hover:bg-[#111318] group-hover:text-white transition-colors shrink-0 cursor-pointer"
+                          >
+                            <ArrowUpRight className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* LIVE EMBEDDED WEBSITE PREVIEW (For BanglaGrantha & TurfDhaka) */}
+                      {project.liveUrl && (
+                        <div className="mt-6 rounded-xl overflow-hidden border border-[#E4E4E0] bg-[#FAF9F5]">
+                          {/* Embedded Browser Address Bar */}
+                          <div className="px-3.5 py-2.5 bg-[#111318] text-white flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-mono text-[11px] text-slate-200 hover:text-white hover:underline truncate max-w-[220px] sm:max-w-[280px]"
+                              title={project.liveUrl}
+                            >
+                              {project.liveDomainLabel || project.liveUrl} ↗
+                            </a>
+
+                            <div className="flex items-center gap-2 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => toggleEmbedInteraction(project.id)}
+                                className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                                  isInteractiveEmbed
+                                    ? 'bg-[#1D4ED8] text-white'
+                                    : 'bg-white/15 text-slate-200 hover:bg-white/25'
+                                }`}
+                              >
+                                {isInteractiveEmbed
+                                  ? 'Interactive Mode (Active)'
+                                  : 'Interact Inside Embed'}
+                              </button>
+
+                              <a
+                                href={project.liveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-2.5 py-1 rounded text-[11px] font-semibold bg-white text-[#111318] hover:bg-slate-200 transition-colors whitespace-nowrap"
+                              >
+                                Open Full Tab ↗
+                              </a>
                             </div>
                           </div>
+
+                          {/* Embedded Live Iframe + Clickable Visit Overlay */}
+                          <div className="relative w-full h-[320px] sm:h-[360px] bg-white">
+                            <iframe
+                              src={project.liveUrl}
+                              title={`${project.title} Live Embedded Website`}
+                              loading="lazy"
+                              className="w-full h-full border-0"
+                            />
+
+                            {/* Clickable Overlay (when not in inline interaction mode, clicking anywhere opens the live website) */}
+                            {!isInteractiveEmbed && (
+                              <a
+                                href={project.liveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Click to open ${project.title} live website in a new tab`}
+                                className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent opacity-90 hover:opacity-100 transition-opacity flex items-end justify-between p-4 text-white"
+                              >
+                                <div>
+                                  <div className="text-xs font-mono text-slate-200">
+                                    Live Deployed Application · Click Anywhere to Visit
+                                  </div>
+                                  <div className="text-sm font-bold mt-0.5">
+                                    Open {project.title} ({project.liveDomainLabel}) ↗
+                                  </div>
+                                </div>
+                                <span className="px-3 py-1.5 rounded-lg bg-[#1D4ED8] text-white text-xs font-semibold whitespace-nowrap shrink-0">
+                                  Launch Website ↗
+                                </span>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Visual Architectural Blueprint Header */}
+                      <div className="mt-5 p-4 rounded-xl bg-[#FAF9F5] border border-[#E4E4E0]">
+                        <div className="text-[11px] font-mono text-[#525866] mb-3 flex items-center justify-between">
+                          <span>SYSTEM ARCHITECTURE PIPELINE</span>
+                          <span>{project.context}</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          {project.architectureNodes.map((node, i) => (
+                            <div
+                              key={node.layer}
+                              className="p-2.5 bg-white rounded-lg border border-[#E4E4E0]"
+                            >
+                              <div className="text-[10px] font-mono text-[#525866]">
+                                0{i + 1} · {node.layer}
+                              </div>
+                              <div className="mt-0.5 text-xs font-bold text-[#111318] font-mono truncate">
+                                {node.component}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Narrative Summary */}
+                      <p className="mt-5 text-sm text-[#374151] leading-relaxed">
+                        {project.summary}
+                      </p>
+
+                      {/* Engineering Bullet Points */}
+                      <ul className="mt-4 space-y-2 border-t border-[#E4E4E0] pt-4">
+                        {project.engineeringHighlights.map((highlight, idx) => (
+                          <li
+                            key={idx}
+                            className="text-xs sm:text-sm text-[#525866] leading-relaxed flex items-start gap-2"
+                          >
+                            <span className="font-mono text-[#1D4ED8] font-bold shrink-0">
+                              {idx + 1}.
+                            </span>
+                            <span>{highlight}</span>
+                          </li>
                         ))}
+                      </ul>
+                    </div>
+
+                    {/* Card Footer: Unboxed Tech Metadata & Action Links */}
+                    <div className="mt-6 pt-4 border-t border-[#E4E4E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="text-xs text-[#525866] leading-relaxed">
+                        {project.technologies.join(' · ')}
+                      </div>
+                      <div className="flex items-center gap-4 shrink-0">
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold text-[#047857] hover:underline whitespace-nowrap"
+                          >
+                            Visit Live App ↗
+                          </a>
+                        )}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedProject(project);
+                          }}
+                          className="text-xs font-semibold text-[#1D4ED8] hover:underline whitespace-nowrap cursor-pointer"
+                        >
+                          Inspect Code &amp; Architecture →
+                        </button>
                       </div>
                     </div>
-
-                    {/* Narrative Summary */}
-                    <p className="mt-5 text-sm text-[#374151] leading-relaxed">
-                      {project.summary}
-                    </p>
-
-                    {/* Engineering Bullet Points */}
-                    <ul className="mt-4 space-y-2 border-t border-[#E4E4E0] pt-4">
-                      {project.engineeringHighlights.map((highlight, idx) => (
-                        <li
-                          key={idx}
-                          className="text-xs sm:text-sm text-[#525866] leading-relaxed flex items-start gap-2"
-                        >
-                          <span className="font-mono text-[#1D4ED8] font-bold shrink-0">
-                            {idx + 1}.
-                          </span>
-                          <span>{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Card Footer: Unboxed Tech Metadata & Action Link */}
-                  <div className="mt-6 pt-4 border-t border-[#E4E4E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="text-xs text-[#525866] leading-relaxed">
-                      {project.technologies.join(' · ')}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedProject(project);
-                      }}
-                      className="text-xs font-semibold text-[#1D4ED8] group-hover:underline whitespace-nowrap shrink-0 text-left sm:text-right cursor-pointer"
-                    >
-                      Inspect Code &amp; Architecture →
-                    </button>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -818,7 +969,23 @@ export default function PortfolioClient() {
                     <div className="py-2.5 flex justify-between gap-4">
                       <span className="text-[#525866]">Recent Web Projects</span>
                       <span className="font-semibold text-[#1D4ED8] text-right">
-                        BanglaGrantha · TurfDhaka
+                        <a
+                          href="https://bangla-path.vercel.app/?book=apadartho-satyajit-ray&chapter=1&lang=bn"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline"
+                        >
+                          BanglaGrantha ↗
+                        </a>{' '}
+                        ·{' '}
+                        <a
+                          href="https://turf-dhaka.vercel.app/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline"
+                        >
+                          TurfDhaka ↗
+                        </a>
                       </span>
                     </div>
                     <div className="py-2.5 flex justify-between gap-4">
