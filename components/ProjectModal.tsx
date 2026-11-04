@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { X, Layers, Terminal, CheckCircle2, ArrowUpRight, Globe } from 'lucide-react';
+import Image from 'next/image';
+import { X, Layers, Terminal, CheckCircle2, ArrowUpRight, Globe, Cpu } from 'lucide-react';
 import { PortfolioProject } from '@/lib/portfolio-data';
 
 interface ProjectModalProps {
@@ -75,6 +76,53 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         {/* Body Content */}
         <div className="mt-6 space-y-8">
+          {/* Real Hardware Prototype Photo if hardwareImageUrl is present */}
+          {project.hardwareImageUrl && (
+            <div className="rounded-2xl overflow-hidden border border-[#E4E4E0] bg-[#0F1014] p-4 sm:p-6 text-white space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                <div className="flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-emerald-400" />
+                  <span className="text-xs font-mono font-bold tracking-wide text-white">
+                    REAL HARDWARE PROTOTYPE · ASSEMBLED &amp; CALIBRATED
+                  </span>
+                </div>
+                <span className="text-xs font-mono text-emerald-400">
+                  OLED Telemetry · ESP32 · 16-Ch IR Array · L298N
+                </span>
+              </div>
+
+              <div className="relative w-full h-[320px] sm:h-[420px] rounded-xl overflow-hidden bg-black">
+                <Image
+                  src={project.hardwareImageUrl}
+                  alt={`${project.title} real hardware prototype`}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 800px"
+                  referrerPolicy="no-referrer"
+                  className="object-contain"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs font-mono">
+                <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                  <span className="text-neutral-400 block text-[10px]">MCU</span>
+                  <span className="text-white font-bold">ESP32 DevKit V1</span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                  <span className="text-neutral-400 block text-[10px]">Sensors</span>
+                  <span className="text-emerald-400 font-bold">16x TCRT5000 IR</span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                  <span className="text-neutral-400 block text-[10px]">Driver</span>
+                  <span className="text-white font-bold">L298N H-Bridge</span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                  <span className="text-neutral-400 block text-[10px]">Motors</span>
+                  <span className="text-white font-bold">N20 Metal Gears</span>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Live Interactive Embed inside Modal if liveUrl is present */}
           {project.liveUrl && (
             <div className="rounded-xl overflow-hidden border border-[#E4E4E0] bg-[#FAF9F5]">

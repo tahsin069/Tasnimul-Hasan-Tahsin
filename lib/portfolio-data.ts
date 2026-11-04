@@ -19,6 +19,7 @@ export interface PortfolioProject {
   accentColor: string;
   liveUrl?: string;
   liveDomainLabel?: string;
+  hardwareImageUrl?: string;
   summary: string;
   recruiterTakeaway: string;
   technologies: string[];
@@ -391,6 +392,7 @@ public class Doctor extends User {
     period: 'Embedded Systems Lab & Robotics Competition',
     featuredSpan: 'wide',
     accentColor: '#B45309',
+    hardwareImageUrl: '/assets/aistudio/PXL_20260616_072226791_f145ef7c.jpg',
     summary:
       'Engineered a high-speed autonomous Line-Following Robot (LFR) powered by a dual-core ESP32 DevKit V1 microcontroller and N20 micro metal gear motors. Built and calibrated for competitive LFR robotics tracks featuring acute hairpins, 90-degree intersections, and high-velocity straightaways.',
     recruiterTakeaway:

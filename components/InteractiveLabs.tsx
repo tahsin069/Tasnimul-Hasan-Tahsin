@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import {
   Cpu,
   Code2,
@@ -349,83 +350,80 @@ export default function InteractiveLabs() {
   const currentJavaStep = TELEMEDICINE_STEPS[activeJavaStep];
 
   return (
-    <section id="engineering-labs" className="py-16 md:py-24 relative z-10">
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
-        <div className="glass-bubble rounded-3xl p-6 sm:p-10">
-          {/* Section Header */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200/70">
-            <div className="max-w-2xl">
-              <p className="text-xs font-semibold text-[#2563EB] mb-2">
-                Interactive Code &amp; Hardware Simulation Bench
-              </p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0F172A] [text-wrap:balance]">
-                Test-Drive My Core Engineering Systems
-              </h2>
-            </div>
-            <p className="text-sm text-[#475569] max-w-md leading-relaxed">
-              Step through the Java OOP Telemedicine clinical state machine, tune the 16-channel
-              ESP32 LFR PID robot controller, or test the BanglaGrantha and TurfDhaka engines.
-            </p>
-          </div>
+    <section id="engineering-labs" className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span className="text-xs font-mono font-bold text-blue-400 tracking-wider">
+            04 · INTERACTIVE CODE &amp; ROBOTICS SIMULATORS
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-display">
+            Interactive Engineering Bench
+          </h2>
+        </div>
+        <p className="text-xs sm:text-sm text-neutral-400 max-w-md">
+          Live test the Java Telemedicine OOP state machine, tune the 16-channel ESP32 PID controller, or test BanglaGrantha and TurfDhaka.
+        </p>
+      </div>
 
-          {/* Segmented Functional Controls */}
-          <div className="mt-7 flex flex-wrap items-center gap-2 p-1.5 glass-well rounded-2xl">
-            <button
-              type="button"
-              data-cursor-label="Java Telemedicine Lab"
-              onClick={() => setActiveTab('telemedicine')}
-              className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl transition-all whitespace-nowrap shrink-0 ${
-                activeTab === 'telemedicine'
-                  ? 'bg-[#2563EB] text-white shadow-md'
-                  : 'text-[#475569] hover:text-[#0F172A] hover:bg-white/60'
-              }`}
-            >
-              <Code2 className="w-4 h-4 shrink-0" />
-              <span>01. Java Telemedicine OOP</span>
-            </button>
+      <div className="bg-[#16171D] rounded-3xl p-6 sm:p-9 border border-white/10 shadow-2xl">
+        {/* Segmented Functional Controls */}
+        <div className="flex flex-wrap items-center gap-2 p-1.5 bg-[#20222B] rounded-2xl border border-white/10">
+          <button
+            type="button"
+            data-cursor-label="Java Telemedicine Lab"
+            onClick={() => setActiveTab('telemedicine')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all whitespace-nowrap shrink-0 ${
+              activeTab === 'telemedicine'
+                ? 'bg-white text-black shadow-md'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            <Code2 className="w-4 h-4 shrink-0" />
+            <span>01. Java Telemedicine OOP</span>
+          </button>
 
-            <button
-              type="button"
-              data-cursor-label="ESP32 PID Robot Sim"
-              onClick={() => setActiveTab('lfr')}
-              className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl transition-all whitespace-nowrap shrink-0 ${
-                activeTab === 'lfr'
-                  ? 'bg-[#2563EB] text-white shadow-md'
-                  : 'text-[#475569] hover:text-[#0F172A] hover:bg-white/60'
-              }`}
-            >
-              <Cpu className="w-4 h-4 shrink-0" />
-              <span>02. ESP32 16-Ch PID Robot (LFR)</span>
-            </button>
+          <button
+            type="button"
+            data-cursor-label="ESP32 PID Robot Sim"
+            onClick={() => setActiveTab('lfr')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all whitespace-nowrap shrink-0 ${
+              activeTab === 'lfr'
+                ? 'bg-white text-black shadow-md'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            <Cpu className="w-4 h-4 shrink-0" />
+            <span>02. ESP32 16-Ch PID Robot</span>
+          </button>
 
-            <button
-              type="button"
-              data-cursor-label="BanglaGrantha Search"
-              onClick={() => setActiveTab('banglagrantha')}
-              className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl transition-all whitespace-nowrap shrink-0 ${
-                activeTab === 'banglagrantha'
-                  ? 'bg-[#2563EB] text-white shadow-md'
-                  : 'text-[#475569] hover:text-[#0F172A] hover:bg-white/60'
-              }`}
-            >
-              <BookOpen className="w-4 h-4 shrink-0" />
-              <span>03. BanglaGrantha Index</span>
-            </button>
+          <button
+            type="button"
+            data-cursor-label="BanglaGrantha Search"
+            onClick={() => setActiveTab('banglagrantha')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all whitespace-nowrap shrink-0 ${
+              activeTab === 'banglagrantha'
+                ? 'bg-white text-black shadow-md'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            <BookOpen className="w-4 h-4 shrink-0" />
+            <span>03. BanglaGrantha Index</span>
+          </button>
 
-            <button
-              type="button"
-              data-cursor-label="TurfDhaka Slot Engine"
-              onClick={() => setActiveTab('turfdhaka')}
-              className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl transition-all whitespace-nowrap shrink-0 ${
-                activeTab === 'turfdhaka'
-                  ? 'bg-[#2563EB] text-white shadow-md'
-                  : 'text-[#475569] hover:text-[#0F172A] hover:bg-white/60'
-              }`}
-            >
-              <CalendarClock className="w-4 h-4 shrink-0" />
-              <span>04. TurfDhaka Slot &amp; Split</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            data-cursor-label="TurfDhaka Slot Engine"
+            onClick={() => setActiveTab('turfdhaka')}
+            className={`flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all whitespace-nowrap shrink-0 ${
+              activeTab === 'turfdhaka'
+                ? 'bg-white text-black shadow-md'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            <CalendarClock className="w-4 h-4 shrink-0" />
+            <span>04. TurfDhaka Slot &amp; Split</span>
+          </button>
+        </div>
 
           {/* LAB 1: JAVA TELEMEDICINE SYSTEM PROTOTYPE */}
           {activeTab === 'telemedicine' && (
@@ -571,6 +569,26 @@ export default function InteractiveLabs() {
                     Test how the 16-channel TCRT5000 IR sensor array and external 16:1 multiplexer
                     compute track deviation and drive the L298N + N20 DC motors.
                   </p>
+                </div>
+
+                {/* Real Robot Hardware Prototype Snapshot */}
+                <div className="relative w-full h-48 rounded-2xl overflow-hidden bg-black border border-white/20 shadow-md">
+                  <Image
+                    src="/assets/aistudio/PXL_20260616_072226791_f145ef7c.jpg"
+                    alt="Real ESP32 PID Line-Following Robot prototype"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 420px"
+                    referrerPolicy="no-referrer"
+                    className="object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex flex-col justify-between p-3 text-white">
+                    <span className="self-start px-2.5 py-0.5 rounded-md bg-emerald-500/90 text-black text-[10px] font-mono font-bold">
+                      Real Hardware Prototype · Assembled in Lab
+                    </span>
+                    <div className="text-[11px] font-mono text-neutral-300">
+                      OLED: Err 7500.0 (INV) Kp · Dual N20 Motors
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -1064,7 +1082,6 @@ export default function InteractiveLabs() {
             </div>
           )}
         </div>
-      </div>
     </section>
   );
 }
